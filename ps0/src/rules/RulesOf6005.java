@@ -1,55 +1,45 @@
-/* Copyright (c) 2007-2016 MIT 6.005 course staff, all rights reserved.
- * Redistribution of original or derived work requires permission of course staff.
- */
 package rules;
 
 /**
- * RulesOf6005 represents the collaboration policy of 6.005 as described by the
- * general information on Stellar.
+ * Policy for using code in 6.005-style assignments.
  */
 public class RulesOf6005 {
-     
+
     /**
-     * Judge whether a given piece of code may be used in an assignment (problem
-     * set or team project) or not, according to the 6.005 collaboration policy.
-     * 
-     * @param writtenByYourself true if the code in question was written by
-     *        yourself or, in the case of a team project, your teammates,
-     *        otherwise false.
-     * @param availableToOthers if not writtenByYourself, whether or not the
-     *        code in question is available to all other students in the class.
-     *        Otherwise ignored.
-     * @param writtenAsCourseWork if not writtenByYourself, whether or not the
-     *        code in question was written specifically as part of a solution to
-     *        a 6.005 assignment, in the current or past semesters. Otherwise
-     *        ignored.
-     * @param citingYourSource if not writtenByYourself, whether or not you
-     *        properly cite your source. Otherwise ignored.
-     * @param implementationRequired whether the assignment specifically asks
-     *        you to implement the feature in question.
-     * @return Whether or not, based on the information provided in the
-     *         arguments, you are likely to be allowed to use the code in
-     *         question in your assignment, according to the 6.005 collaboration
-     *         policy for the current semester.
+     * Decides whether code may be used in an assignment.
+     *
+     * @param writtenByYourself      true if you wrote the code yourself
+     * @param availableToOthers      true if the code is available to all students
+     * @param writtenAsCourseWork    true if the code was produced as course work by other students
+     * @param citingYourSource       true if you give proper attribution
+     * @param implementationRequired true if the assignment says to implement this yourself
+     * @return true if the code may be used
      */
     public static boolean mayUseCodeInAssignment(boolean writtenByYourself,
-            boolean availableToOthers, boolean writtenAsCourseWork,
-            boolean citingYourSource, boolean implementationRequired) {
-        
-        // TODO: Fill in this method, then remove the exception
-        
-        throw new RuntimeException("implement me!");
+                                                 boolean availableToOthers,
+                                                 boolean writtenAsCourseWork,
+                                                 boolean citingYourSource,
+                                                 boolean implementationRequired) {
+        if (writtenByYourself) {
+            return true;
+        }
+        if (writtenAsCourseWork) {
+            return false;
+        }
+        return availableToOthers && citingYourSource && !implementationRequired;
     }
-    
+
     /**
-     * Main method of the class.
-     * 
-     * Runs the mayUseCodeInAssignment method.
-     * 
-     * @param args unused
+     * Entry point: prints the result of a few sample inputs.
      */
     public static void main(String[] args) {
-        System.out.println("You may certainly use code you wrote yourself: " +
-            RulesOf6005.mayUseCodeInAssignment(true, false, true, true, true));
+        System.out.println("Own code: "
+                + mayUseCodeInAssignment(true, false, false, false, false));
+        System.out.println("Cited public code: "
+                + mayUseCodeInAssignment(false, true, false, true, false));
+        System.out.println("Uncited public code: "
+                + mayUseCodeInAssignment(false, true, false, false, false));
+        System.out.println("Other students' coursework: "
+                + mayUseCodeInAssignment(false, true, true, true, false));
     }
 }
